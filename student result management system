@@ -1,0 +1,292 @@
+#include <iostream>
+#include<cstring>
+#include<fstream>
+#include<cstdlib>
+#include<conio.h>
+using namespace std;
+string student_name,mother_name,father_name,collage_name,program,branch,date;
+long long int roll;
+int num;
+float sum;
+float percent;
+int math,phy,chem,cs,cp;
+//defining class
+class student{
+    public:
+    void insert();
+    void deleted();
+    void display();
+    
+    void update();
+    void menu();
+};
+void student::menu(){
+    start:
+    system("cls");
+    char x;
+    cout<<endl;
+    cout<<"                       ******************************************************************"<<endl;
+    cout<<"                                        STUDENT RESULT MANAGEMENT SYSTEM"<<endl;
+    cout<<"                       ******************************************************************"<<endl;
+    cout<<endl<<endl;
+    cout<<"                         1) Create record"<<endl;
+    cout<<"                         2) Display record"<<endl;
+    cout<<"                         3) Update record"<<endl;
+    cout<<"                         4) Delete record"<<endl;
+    cout<<"                         5) Exit"<<endl;
+    cout<<endl<<endl;
+    cout<<"                       ******************************************************************"<<endl;
+    cout<<"                                      CHOOSE AMONG OPTIONS: 1   2   3   4   5   "<<endl;
+    cout<<"                       *******************************************************************"<<endl;
+    int option;
+    cin>>option;
+    switch(option){
+        case 1:
+        do{
+             insert();
+             cout<<endl;
+             cout<<"Add new record (y/n) : ";
+             cin>>x; 
+        }while(x=='Y'||x=='y');
+       
+        break;
+        case 2:
+        display();
+        break;
+        
+        case 3:
+       update();
+       break;
+        case 4:
+         deleted();
+        break;
+        case 5:
+        exit(0);
+        break;
+        default: 
+        cout<<"invalid choice , please try again......";
+    }
+    getch();
+    goto start;
+}
+
+//insert function
+void student :: insert(){
+    fstream file;
+    system("cls");
+    cout<<"                        ******************************************************************"<<endl;
+    cout<<"                                                 ENTER STUDENT DETAILS"<<endl;
+    cout<<"                        *******************************************************************"<<endl;
+    cout<<endl<<endl;
+    cout<<"                        Student's name : ";
+    cin>>student_name;
+    cout<<"                        Enrollment no. : ";
+    cin>>roll;
+    cout<<"                        Father's name  : ";
+    cin>>father_name;
+    cout<<"                        Mother's name  : ";
+    cin>>mother_name;
+    cout<<"                        Collage name   : ";
+    cin>>collage_name;
+    
+    cout<<"                        Program        : ";
+    cin>>program;
+    cout<<"                        Branch         : ";
+    cin>>branch;
+    cout<<"                        Date of birth  : ";
+    cin>>date;
+    cout<<endl<<endl;
+    cout<<"                        Enter marks subject-wise..............."<<endl;
+    cout<<"                        Applied mathematics : ";
+    cin>>math;
+    cout<<"                        Applied physics : ";
+    cin>>phy;
+    cout<<"                        Applied chemistry : ";
+    cin>>chem;
+    cout<<"                        Communication skills : ";
+    cin>>cs;
+    cout<<"                        Programming in C : ";
+    cin>>cp;
+      
+      sum=math+phy+chem+cs+cp;
+      //calculating percentage
+      percent=sum/5;
+
+      //creating file "result_record.txt" to store the data
+    
+    file.open("result_record.txt",ios::out | ios::app);
+    
+    file<<" "<<student_name<<" "<<roll<<" "<<father_name<<" "<<mother_name<<" "<<collage_name<<" "<<program<<" "<<branch<<" "<<date<<" "<<math<<" "<<phy<<" "<<chem<<" "<<cs<<" "<<cp<<" "<<sum<<" "<<percent<<endl;
+    
+    file.close();
+   
+}
+//function to update details of student
+void student :: update(){
+    fstream file;
+    string s_name,m_name,f_name,c_name,pro,new_branch,dob;
+    
+    system("cls");
+    cout<<"                        ****************************************************************"<<endl;
+    cout<<"                                                 UPDATE STUDENT DETAILS"<<endl;
+    cout<<"                        ****************************************************************"<<endl;
+    cout<<endl<<endl;
+    cout<<"ENTER ENROLLMENT NO. OF STUDENT WHOSE DATA IS TO BE UPDATED : ";
+    cin>>roll;
+    cout<<"STUDENT'S NAME : ";
+    cin>>s_name;
+    cout<<"FATHER'S NAME : ";
+    cin>>f_name;
+    cout<<"MOTHER'S NAME : ";
+    cin>>m_name;
+    cout<<"COLLAGE NAME : ";
+    cin>>c_name;
+    cout<<"PROGRAM : ";
+    cin>>pro;
+    cout<<"BRANCH : ";
+    cin>>new_branch;
+    cout<<"DATE OF BIRTH : ";
+    cin>>dob;
+     file.open("result_record.txt",ios::in);
+    file>>student_name>>roll>>father_name>>mother_name>>collage_name>>program>>branch>>date>>math>>phy>>chem>>cs>>cp>>sum>>percent;
+    file.close();
+    student_name.assign(s_name);
+    father_name.assign(f_name);
+    mother_name.assign(m_name);
+    collage_name.assign(c_name);
+    program.assign(pro);
+    branch.assign(new_branch);
+    date.assign(dob);
+     ofstream ofs;
+    ofs.open("result_record.txt",ofstream::out|ofstream::trunc);
+    ofs.close();
+    file.open("result_record.txt",ios::out | ios::app);
+    file<<" "<<student_name<<" "<<roll<<" "<<father_name<<" "<<mother_name<<" "<<collage_name<<" "<<program<<" "<<branch<<" "<<date<<" "<<math<<" "<<phy<<" "<<chem<<" "<<cs<<" "<<cp<<" "<<sum<<" "<<percent<<endl;
+    file.close();
+   
+}
+//display function--> to display data entered by user on screen
+void student:: display(){
+long long int enroll;
+    system("cls");
+    
+    fstream file;
+    //opening the txt file "result_record.txt" 
+     file.open("result_record.txt",ios::in);
+    file>>student_name>>roll>>father_name>>mother_name>>collage_name>>program>>branch>>date>>math>>phy>>chem>>cs>>cp>>sum>>percent;
+    cout<<"ENTER ENROLLMENT NO. : ";
+    cin>>enroll;
+    
+   
+    if(!file){
+        cout<<"No data is found........";
+        file.close();
+
+    }
+    else if(enroll==roll){
+    cout<<"                       *****************************************************************"<<endl;
+    cout<<"                                                  STUDENT RESULT"<<endl;
+    cout<<"                       ******************************************************************"<<endl;
+    cout<<endl<<endl;
+
+        
+        while(!file.eof()){
+            cout<<"STUDENT'S NAME : "<<student_name;
+            cout<<"                         ENROLLMENT NO. : "<<roll<<endl;
+            cout<<" FATHER'S NAME : "<<father_name;
+            cout<<"                          MOTHER'S NAME : "<<mother_name<<endl;
+            cout<<"COLLAGE NAME : "<<collage_name;
+            cout<<"                                PROGRAM : "<<program<<endl;;
+            cout<<"BRANCH : "<<branch;
+            cout<<"                          DATE OF BIRTH : "<<date<<endl;
+            cout<<endl<<endl;
+            cout<<"_____________________________________________________________________________________"<<endl;
+            cout<<"  SNO. |         SUBJECT         |  MARKS OBTAINED    |        MAXIMUM MARKS"<<endl;
+            cout<<"   1.  |  APPLIED MATHEMATICS    |   "<<math<<"              |              100"<<endl;        
+            cout<<"   1.  |  APPLIED PHYSICS        |   "<<phy<<"              |             100"<<endl;        
+            cout<<"   1.  |  APPLIED CHEMISTRY      |   "<<chem<<"              |              100"<<endl;        
+            cout<<"   1.  |   COMMUNICATION SKILLS  |    "<<cs<<"              |             100"<<endl;        
+            cout<<"   1.  |   PROGRAMMING IN C      |    "<<cp<<"              |             100"<<endl;   
+            cout<<"__ ____|_________________________|_____________________|_____________________________";       
+            cout<<endl;
+            cout<<"TOTAL MARKS : "<<sum<<"                               PERCENT : "<<percent;  
+            file>>student_name>>roll>>father_name>>mother_name>>collage_name>>program>>branch>>date>>math>>phy>>chem>>cs>>cp>>sum>>percent;
+
+        }
+    
+    }
+    file.close();
+    
+}
+
+void student::deleted(){
+system("cls");
+int found=0;
+long long int enrollno;
+int choice;
+    cout<<"                       *****************************************************************"<<endl;
+    cout<<"                                            DELETE STUDENT RECORD"<<endl;
+    cout<<"                       ****************************************************************"<<endl;
+    cout<<endl<<endl;
+    cout<<"1 DELETE ENTIRE DATA IN FILE"<<endl;
+    cout<<"2 DELETE DATA OF ONLY INE STUDENT"<<endl;
+    cout<<"enter your choice...."<<endl;
+    cin>>choice;
+    if(choice==1){
+        
+         ofstream ofs;
+    ofs.open("result_record.txt",ofstream::out|ofstream::trunc);
+    ofs.close();
+    
+    cout<<"DATA IS SUCCESSFULLY DELETED.........";
+    }
+    else if(choice==2){
+
+    fstream file,file1;
+     file.open("result_record.txt",ios::in);
+    
+    if(!file){
+        cout<<"NO DATA IS FOUND......";
+        file.close();
+    }
+    else{
+        cout<<"Enter enrollment number : ";
+        cin>>enrollno;
+        file1.open("temp.txt",ios::out|ios::app);
+        file>>student_name>>roll>>father_name>>mother_name>>collage_name>>program>>branch>>date>>math>>phy>>chem>>cs>>cp>>sum>>percent;
+        while(!file.eof()){
+            if(enrollno!=roll){
+                file<<" "<<student_name<<" "<<roll<<" "<<father_name<<" "<<mother_name<<" "<<collage_name<<" "<<program<<" "<<branch<<" "<<date<<" "<<math<<" "<<phy<<" "<<chem<<" "<<cs<<" "<<cp<<" "<<sum<<" "<<percent<<endl;
+                cout<<endl;
+            }
+            else{
+                found++;
+                cout<<"DATA IS SUCCESSFULLY DELETED.........";
+            }
+            file>>student_name>>roll>>father_name>>mother_name>>collage_name>>program>>branch>>date>>math>>phy>>chem>>cs>>cp>>sum>>percent;
+
+        }
+        if(found==0){
+            cout<<"STUDENT ROLL NO. IS NOT FOUND........";
+        }
+        file.close();
+        file1.close();
+        remove("result_record.txt");
+        rename("temp.txt","result_record.txt");
+    }
+    }
+    }
+    
+    
+    
+    
+
+int main()
+{
+    student student1;
+    student1.menu();
+    getch();
+    
+    return 0;
+
+}
